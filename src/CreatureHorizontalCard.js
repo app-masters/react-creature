@@ -1,6 +1,9 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import images from '../img/';
+import {Col, Row} from "react-flexbox-grid";
+
+// import {Col, Row} from "react-grid-system";
 
 class CreatureHorizontalCard extends Component {
     render() {
@@ -9,7 +12,7 @@ class CreatureHorizontalCard extends Component {
 
         if (creature.status === 404) {
             return (
-                <div style={styles.criaturaCard}>
+                <div style={styles.card}>
                     <b>{creature.email}</b> - não encontrado
                 </div>
             );
@@ -17,11 +20,31 @@ class CreatureHorizontalCard extends Component {
 
         if (creature.status === 202) {
             return (
-                <div style={styles.criaturaCard}>
+                <div style={styles.card}>
                     <b>{creature.email}</b> - ainda procurando...
                 </div>
             );
         }
+
+        return (
+            <Row style={styles.card}>
+                <Col lg={4} md={4} sm={12}>
+                    {this.renderPhotos(creature.photos)}
+                </Col>
+                <Col lg={1} md={1} sm={12}>
+                    {this.renderSocialLinks(creature.socialProfiles)}
+                    {this.renderSocialMetrics(creature.socialProfiles)}
+                </Col>
+                <Col lg={6} md={6} sm={12}>
+                    {this.renderName(creature.contactInfo)}
+                    {this.renderLocation(creature.demographics)}
+                    {this.renderOrganizations(creature.organizations)}
+                    {this.renderWebSites(creature.contactInfo ? creature.contactInfo.websites : null)}
+                    {this.renderTopics(creature.digitalFootprint ? creature.digitalFootprint.topics : null)}
+                    {this.renderBios(creature.socialProfiles)}
+                </Col>
+            </Row>
+        );
 
         return (
             <div style={styles.criaturaCard}>
@@ -40,17 +63,44 @@ class CreatureHorizontalCard extends Component {
                             {this.renderTopics(creature.digitalFootprint ? creature.digitalFootprint.topics : null)}
                         </div>
                     </div>
+                    {this.renderBios(creature.socialProfiles)}
                 </div>
             </div>
         );
     }
 
-    renderPhoto(data) {
+    renderPhotos(data) {
         // console.log("photos", data);
         if (this.props.showPhoto === false || !data)
             return null;
-        let photoUrl = data[0].url;
-        return (<div style={styles.photos.container}><img src={photoUrl} style={styles.photos.photo}/></div>);
+        let photo = data.shift();
+        return (
+            <div>
+                <div style={styles.photos.container}>
+                    <img src={photo.url} style={styles.photos.photo}/>
+                </div>
+                <div style={styles.photos.containerSmall}>
+                    {data.map(photo => {
+                        return (
+                            <div style={
+                                {
+                                    width: '30%',
+                                    minHeight: 100,
+                                    // maxWidth: 200,
+                                    // maxHeight: 200,
+                                    margin: 4,
+                                    overflow: 'hidden',
+                                    background: 'url(' + photo.url + ')',
+                                    backgroundSize: 'cover'}
+                            }
+                            >
+                                {/*<img src={photo.url} style={styles.photos.photo}/>*/}
+                            </div>
+                        )
+                            ;
+                    })}
+                </div>
+            </div>);
     }
 
 
@@ -99,7 +149,7 @@ class CreatureHorizontalCard extends Component {
             if (!profile.followers) return;
             return (
                 <div style={styles.social.metric}>
-                    <a href={profile.url}>
+                    <a style={{textDecoration: 'none', color: 'inherit'}} href={profile.url}>
                         <span style={styles.socialMetrics.followers}>{profile.followers}</span><br/>
                         <span style={styles.socialMetrics.title}>{profile.typeName}</span>
                     </a>
@@ -112,7 +162,7 @@ class CreatureHorizontalCard extends Component {
             return null;
 
         return (
-            <div style={styles.social.metrics}>
+            <div>
                 {profiles}
             </div>);
     }
@@ -136,7 +186,7 @@ class CreatureHorizontalCard extends Component {
 
         return (
             <div style={styles.organizations}>
-                <b>Organizações</b><br/>
+                <span style={styles.subTitle}>Organizações</span>
                 <div>{organizations}</div>
             </div>);
     }
@@ -156,7 +206,7 @@ class CreatureHorizontalCard extends Component {
 
         return (
             <div style={styles.topics}>
-                <b>Tópicos</b><br/>
+                <span style={styles.subTitle}>Tópicos</span>
                 <div>{topics}</div>
             </div>);
     }
@@ -166,7 +216,7 @@ class CreatureHorizontalCard extends Component {
         if (this.props.showWebSites === false || !data)
             return null;
         let sites = data.map(site => {
-            let urlDisplay = site.url.replace("https://","").replace("http://","");
+            let urlDisplay = site.url.replace("https://", "").replace("http://", "");
             return (<span><a href={site.url}>{urlDisplay}</a><br/></span>)
         });
 
@@ -174,7 +224,8 @@ class CreatureHorizontalCard extends Component {
             return null;
 
         return (
-            <div style={styles.sites}><b>Sites</b><br/>
+            <div style={styles.sites}>
+                <span style={styles.subTitle}>Sites</span>
                 <div>{sites}</div>
             </div>);
     }
@@ -194,11 +245,35 @@ class CreatureHorizontalCard extends Component {
 
         return (<div style={styles.location}>{location}</div>);
     }
+
+    renderBios(data) {
+        // console.log("socialProfiles", data);
+        if (this.props.showBios === false || !data)
+            return null;
+        let bios = data.map(profile => {
+            if (!profile.bio) return;
+            return (
+                <div style={styles.bio}>
+                    {strip(profile.bio)}
+                </div>
+            );
+        });
+
+        if (!bios)
+            return null;
+
+        return (
+            <div style={styles.bios}>
+                <span style={styles.subTitle}>Resumos</span><br/>
+                {bios}
+            </div>);
+    }
 }
 
 const styles = {
-    criaturaCard: {
-        borderColor: 'black',
+    card: {
+        boxShadow: '0 2px 2px 2px rgba(140, 140, 140, 0.11)',
+        borderColor: '#c3c3c3',
         borderWidth: 1,
         borderStyle: 'solid',
         display: 'flex',
@@ -208,26 +283,41 @@ const styles = {
         marginTop: 8,
         marginRight: 8
     },
-    criaturaData: {
-        display: 'flex',
-        flexDirection: 'column'
-    },
     criaturaColumn: {
         display: 'flex',
         flexDirection: 'row'
     },
     photos:
         {
-            container: {width: 400},
-            photo: {width: '100%'}
+            containerSmall: {
+                display: 'flex',
+                flexWrap: 'wrap',
+                justifyContent: 'flex-start'
+            },
+            photo: {
+                width: '100%',
+                objectFit: 'cover'
+            },
+            photoSmall: {
+                width: '30%',
+                maxWidth: 100,
+                maxHeight: 100,
+                margin: 4,
+                overflow: 'hidden'
+            }
         },
     name: {
         fontSize: 28,
-        lineHeight: '1.5'
+        lineHeight: '1.5',
+        textAlign: 'center',
+        fontWeight: 700,
+        color: '#313131'
     },
     location: {
         fontSize: 16,
-        lineHeight: '2'
+        lineHeight: '2',
+        fontWeight: 300,
+        textAlign: 'center'
     },
     social: {
         profiles: {
@@ -244,8 +334,8 @@ const styles = {
 
     },
     socialIcon: {
-        width: 32,
-        margin: 4
+        width: 28,
+        margin: 3
     }
     ,
     socialMetrics:
@@ -257,25 +347,42 @@ const styles = {
                 fontSize: 12
             },
         },
-    organizations:{
+    organizations: {
         fontSize: 14,
         marginBottom: 12
     },
-    organizationCurrent:{
-    },
-    organizationPast:{
-       color: '#7d7d7d',
-       fontWeight: 300
+    organizationCurrent: {},
+    organizationPast: {
+        color: '#7d7d7d',
+        fontWeight: 300
     },
     sites: {
         fontSize: 14,
         marginBottom: 12
     },
-    topics:{
+    topics: {
         fontSize: 14,
         marginBottom: 12
+    },
+    bios: {
+        fontSize: 14,
+    },
+    bio: {
+        marginBottom: 4
+    },
+    subTitle: {
+        fontSize: 18,
+        fontWeight: 700,
+        lineHeight: '1.5'
     }
+
 };
+
+function strip(html) {
+    let tmp = document.createElement("DIV");
+    tmp.innerHTML = html;
+    return tmp.textContent || tmp.innerText || "";
+}
 
 
 CreatureHorizontalCard.propTypes = {

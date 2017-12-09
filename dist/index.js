@@ -4,12 +4,12 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _CreatureSmallCard = require('./CreatureSmallCard');
+var _CreatureHorizontalCard = require('./CreatureHorizontalCard');
 
-Object.defineProperty(exports, 'CreatureSmallCard', {
+Object.defineProperty(exports, 'CreatureHorizontalCard', {
   enumerable: true,
   get: function get() {
-    return _interopRequireDefault(_CreatureSmallCard).default;
+    return _interopRequireDefault(_CreatureHorizontalCard).default;
   }
 });
 

@@ -18,6 +18,8 @@ var _img = require('../img/');
 
 var _img2 = _interopRequireDefault(_img);
 
+var _reactGridSystem = require('react-grid-system');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -26,32 +28,101 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var CreatureSmallCard = function (_Component) {
-    _inherits(CreatureSmallCard, _Component);
+var CreatureHorizontalCard = function (_Component) {
+    _inherits(CreatureHorizontalCard, _Component);
 
-    function CreatureSmallCard() {
-        _classCallCheck(this, CreatureSmallCard);
+    function CreatureHorizontalCard() {
+        _classCallCheck(this, CreatureHorizontalCard);
 
-        return _possibleConstructorReturn(this, (CreatureSmallCard.__proto__ || Object.getPrototypeOf(CreatureSmallCard)).apply(this, arguments));
+        return _possibleConstructorReturn(this, (CreatureHorizontalCard.__proto__ || Object.getPrototypeOf(CreatureHorizontalCard)).apply(this, arguments));
     }
 
-    _createClass(CreatureSmallCard, [{
+    _createClass(CreatureHorizontalCard, [{
         key: 'render',
         value: function render() {
             var creature = this.props.creature;
             console.log("creature..", this.props.creature);
 
+            if (creature.status === 404) {
+                return _react2.default.createElement(
+                    'div',
+                    { style: styles.criaturaCard },
+                    _react2.default.createElement(
+                        'b',
+                        null,
+                        creature.email
+                    ),
+                    ' - n\xE3o encontrado'
+                );
+            }
+
+            if (creature.status === 202) {
+                return _react2.default.createElement(
+                    'div',
+                    { style: styles.criaturaCard },
+                    _react2.default.createElement(
+                        'b',
+                        null,
+                        creature.email
+                    ),
+                    ' - ainda procurando...'
+                );
+            }
+
+            // return (
+            //     <Row>
+            //         <Col>
+            //             {this.renderPhoto(creature.photos)}
+            //         </Col>
+            //         <Col>
+            //             <div style={styles.criaturaData}>
+            //                 {this.renderName(creature.contactInfo)}
+            //                 {this.renderLocation(creature.demographics)}
+            //                 <div style={styles.criaturaColumn}>
+            //                     <div>
+            //                         {this.renderSocialLinks(creature.socialProfiles)}
+            //                         {this.renderSocialMetrics(creature.socialProfiles)}
+            //                     </div>
+            //                     <div>
+            //                         {this.renderOrganizations(creature.organizations)}
+            //                         {this.renderWebSites(creature.contactInfo ? creature.contactInfo.websites : null)}
+            //                         {this.renderTopics(creature.digitalFootprint ? creature.digitalFootprint.topics : null)}
+            //                     </div>
+            //                 </div>
+            //                 {this.renderBios(creature.socialProfiles)}
+            //             </div>
+            //         </Col>
+            //     </Row>
+            // );
+
             return _react2.default.createElement(
                 'div',
-                { style: { borderColor: 'black', borderWidth: 1, borderStyle: 'solid' } },
+                { style: styles.criaturaCard },
                 this.renderPhoto(creature.photos),
-                this.renderName(creature.contactInfo),
-                this.renderLocation(creature.demographics),
-                this.renderSocialLinks(creature.socialProfiles),
-                this.renderSocialMetrics(creature.socialProfiles),
-                this.renderWebSites(creature.contactInfo ? creature.contactInfo.websites : null),
-                this.renderOrganizations(creature.organizations),
-                this.renderTopics(creature.digitalFootprint ? creature.digitalFootprint.topics : null)
+                _react2.default.createElement(
+                    'div',
+                    { style: styles.criaturaData },
+                    this.renderName(creature.contactInfo),
+                    this.renderLocation(creature.demographics),
+                    _react2.default.createElement(
+                        'div',
+                        { style: styles.criaturaColumn },
+                        _react2.default.createElement(
+                            'div',
+                            null,
+                            this.renderSocialLinks(creature.socialProfiles),
+                            this.renderSocialMetrics(creature.socialProfiles)
+                        ),
+                        _react2.default.createElement(
+                            'div',
+                            null,
+                            this.renderOrganizations(creature.organizations),
+                            this.renderWebSites(creature.contactInfo ? creature.contactInfo.websites : null),
+                            this.renderTopics(creature.digitalFootprint ? creature.digitalFootprint.topics : null)
+                        )
+                    ),
+                    this.renderBios(creature.socialProfiles)
+                )
             );
         }
     }, {
@@ -62,8 +133,8 @@ var CreatureSmallCard = function (_Component) {
             var photoUrl = data[0].url;
             return _react2.default.createElement(
                 'div',
-                null,
-                _react2.default.createElement('img', { src: photoUrl })
+                { style: styles.photos.container },
+                _react2.default.createElement('img', { src: photoUrl, style: styles.photos.photo })
             );
         }
     }, {
@@ -76,7 +147,7 @@ var CreatureSmallCard = function (_Component) {
 
             return _react2.default.createElement(
                 'div',
-                null,
+                { style: styles.name },
                 name
             );
         }
@@ -106,7 +177,7 @@ var CreatureSmallCard = function (_Component) {
 
             return _react2.default.createElement(
                 'div',
-                null,
+                { style: styles.social.profiles },
                 profiles
             );
         }
@@ -119,7 +190,7 @@ var CreatureSmallCard = function (_Component) {
                 if (!profile.followers) return;
                 return _react2.default.createElement(
                     'div',
-                    null,
+                    { style: styles.social.metric },
                     _react2.default.createElement(
                         'a',
                         { href: profile.url },
@@ -142,34 +213,25 @@ var CreatureSmallCard = function (_Component) {
 
             return _react2.default.createElement(
                 'div',
-                null,
-                'Seguidores: ',
-                _react2.default.createElement('br', null),
-                _react2.default.createElement(
-                    'div',
-                    null,
-                    profiles
-                )
+                { style: styles.social.metrics },
+                profiles
             );
         }
     }, {
         key: 'renderOrganizations',
         value: function renderOrganizations(data) {
-            // console.log("organizations", data);
+            console.log("organizations", data);
             if (this.props.showOrganizations === false || !data) return null;
             var organizations = data.map(function (organization) {
+                var style = organization.current ? styles.organizationCurrent : styles.organizationPast;
                 return _react2.default.createElement(
                     'div',
-                    null,
+                    { style: style },
                     _react2.default.createElement(
                         'span',
                         null,
-                        organization.name
-                    ),
-                    ' -',
-                    _react2.default.createElement(
-                        'span',
-                        null,
+                        organization.name,
+                        ' - ',
                         organization.title
                     )
                 );
@@ -179,8 +241,12 @@ var CreatureSmallCard = function (_Component) {
 
             return _react2.default.createElement(
                 'div',
-                null,
-                'Organiza\xE7\xF5es: ',
+                { style: styles.organizations },
+                _react2.default.createElement(
+                    'b',
+                    null,
+                    'Organiza\xE7\xF5es'
+                ),
                 _react2.default.createElement('br', null),
                 _react2.default.createElement(
                     'div',
@@ -207,8 +273,12 @@ var CreatureSmallCard = function (_Component) {
 
             return _react2.default.createElement(
                 'div',
-                null,
-                'Interesses: ',
+                { style: styles.topics },
+                _react2.default.createElement(
+                    'b',
+                    null,
+                    'T\xF3picos'
+                ),
                 _react2.default.createElement('br', null),
                 _react2.default.createElement(
                     'div',
@@ -223,10 +293,16 @@ var CreatureSmallCard = function (_Component) {
             // console.log("topics", data);
             if (this.props.showWebSites === false || !data) return null;
             var sites = data.map(function (site) {
+                var urlDisplay = site.url.replace("https://", "").replace("http://", "");
                 return _react2.default.createElement(
-                    'a',
-                    { href: site.url },
-                    _react2.default.createElement('img', { style: styles.socialIcon, src: _img2.default.linkTo })
+                    'span',
+                    null,
+                    _react2.default.createElement(
+                        'a',
+                        { href: site.url },
+                        urlDisplay
+                    ),
+                    _react2.default.createElement('br', null)
                 );
             });
 
@@ -234,8 +310,12 @@ var CreatureSmallCard = function (_Component) {
 
             return _react2.default.createElement(
                 'div',
-                null,
-                'Sites: ',
+                { style: styles.sites },
+                _react2.default.createElement(
+                    'b',
+                    null,
+                    'Sites'
+                ),
                 _react2.default.createElement('br', null),
                 _react2.default.createElement(
                     'div',
@@ -256,16 +336,83 @@ var CreatureSmallCard = function (_Component) {
 
             return _react2.default.createElement(
                 'div',
-                null,
+                { style: styles.location },
                 location
+            );
+        }
+    }, {
+        key: 'renderBios',
+        value: function renderBios(data) {
+            // console.log("socialProfiles", data);
+            if (this.props.showBios === false || !data) return null;
+            var bios = data.map(function (profile) {
+                if (!profile.bio) return;
+                return _react2.default.createElement(
+                    'div',
+                    { style: styles.bio },
+                    profile.bio
+                );
+            });
+
+            if (!bios) return null;
+
+            return _react2.default.createElement(
+                'div',
+                { style: styles.bios },
+                bios
             );
         }
     }]);
 
-    return CreatureSmallCard;
+    return CreatureHorizontalCard;
 }(_react.Component);
 
 var styles = {
+    criaturaCard: {
+        borderColor: 'black',
+        borderWidth: 1,
+        borderStyle: 'solid',
+        display: 'flex',
+        flexDirection: 'row',
+        padding: 8,
+        marginLeft: 8,
+        marginTop: 8,
+        marginRight: 8
+    },
+    criaturaData: {
+        display: 'flex',
+        flexDirection: 'column'
+    },
+    criaturaColumn: {
+        display: 'flex',
+        flexDirection: 'row'
+    },
+    photos: {
+        container: {},
+        photo: { width: '100%' }
+    },
+    name: {
+        fontSize: 28,
+        lineHeight: '1.5'
+    },
+    location: {
+        fontSize: 16,
+        lineHeight: '2'
+    },
+    social: {
+        profiles: {
+            flex: 1
+        },
+        metrics: {
+            flex: 2,
+            display: 'flex',
+            flexDirection: 'row'
+        },
+        metric: {
+            padding: 8
+        }
+
+    },
     socialIcon: {
         width: 32,
         margin: 4
@@ -276,14 +423,40 @@ var styles = {
             fontSize: 24
         },
         title: {
-            fontSize: 18
+            fontSize: 12
         }
+    },
+    organizations: {
+        fontSize: 14,
+        marginBottom: 12
+    },
+    organizationCurrent: {},
+    organizationPast: {
+        color: '#7d7d7d',
+        fontWeight: 300
+    },
+    sites: {
+        fontSize: 14,
+        marginBottom: 12
+    },
+    topics: {
+        fontSize: 14,
+        marginBottom: 12
+    },
+    bios: {
+        display: 'flex',
+        flexDirection: 'column'
+    },
+    bio: {
+        fontSize: 14,
+        marginBottom: 12
     }
+
 };
 
-CreatureSmallCard.propTypes = {
+CreatureHorizontalCard.propTypes = {
     creature: _propTypes2.default.object
 };
-CreatureSmallCard.defaultProps = {};
+CreatureHorizontalCard.defaultProps = {};
 
-exports.default = CreatureSmallCard;
+exports.default = CreatureHorizontalCard;

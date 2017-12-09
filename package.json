@@ -1,6 +1,6 @@
 {
   "name": "@app-masters/react-creature",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "React components to display Creature profiles",
   "main": "dist/index.js",
   "directories": {
@@ -36,7 +36,8 @@
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
-    "react": "^15.6.1"
+    "react": "^15.6.1",
+    "react-flexbox-grid": "^2.0.0"
   },
   "devDependencies": {
     "babel-watch": "^2.0.7"
