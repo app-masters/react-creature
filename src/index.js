@@ -1,1 +1,1 @@
-export {default as CreatureSmallCard} from './CreatureSmallCard';
+export {default as CreatureHorizontalCard} from './CreatureHorizontalCard';
