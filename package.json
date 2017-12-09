@@ -1,0 +1,44 @@
+{
+  "name": "@app-masters/react-creature",
+  "version": "0.0.1",
+  "description": "React components to display Creature profiles",
+  "main": "dist/index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "start": "babel-watch src/index.js",
+    "build": "rm -rf dist/ && babel src/ -d dist",
+    "prepublish": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/app-masters/react-creature.git"
+  },
+  "keywords": [
+    "react",
+    "creature",
+    "profile"
+  ],
+  "author": "Tiago Gouvêa",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/app-masters/react-creature/issues"
+  },
+  "homepage": "https://github.com/app-masters/react-creature#readme",
+  "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-es2015-classes": "^6.24.1",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
+    "react": "^15.6.1"
+  },
+  "devDependencies": {
+    "babel-watch": "^2.0.7"
+  }
+}
