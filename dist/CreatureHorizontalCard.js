@@ -18,7 +18,7 @@ var _img = require('../img/');
 
 var _img2 = _interopRequireDefault(_img);
 
-var _reactGridSystem = require('react-grid-system');
+var _reactFlexboxGrid = require('react-flexbox-grid');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -27,6 +27,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+// import {Col, Row} from "react-grid-system";
 
 var CreatureHorizontalCard = function (_Component) {
     _inherits(CreatureHorizontalCard, _Component);
@@ -46,7 +48,7 @@ var CreatureHorizontalCard = function (_Component) {
             if (creature.status === 404) {
                 return _react2.default.createElement(
                     'div',
-                    { style: styles.criaturaCard },
+                    { style: styles.card },
                     _react2.default.createElement(
                         'b',
                         null,
@@ -59,7 +61,7 @@ var CreatureHorizontalCard = function (_Component) {
             if (creature.status === 202) {
                 return _react2.default.createElement(
                     'div',
-                    { style: styles.criaturaCard },
+                    { style: styles.card },
                     _react2.default.createElement(
                         'b',
                         null,
@@ -69,31 +71,31 @@ var CreatureHorizontalCard = function (_Component) {
                 );
             }
 
-            // return (
-            //     <Row>
-            //         <Col>
-            //             {this.renderPhoto(creature.photos)}
-            //         </Col>
-            //         <Col>
-            //             <div style={styles.criaturaData}>
-            //                 {this.renderName(creature.contactInfo)}
-            //                 {this.renderLocation(creature.demographics)}
-            //                 <div style={styles.criaturaColumn}>
-            //                     <div>
-            //                         {this.renderSocialLinks(creature.socialProfiles)}
-            //                         {this.renderSocialMetrics(creature.socialProfiles)}
-            //                     </div>
-            //                     <div>
-            //                         {this.renderOrganizations(creature.organizations)}
-            //                         {this.renderWebSites(creature.contactInfo ? creature.contactInfo.websites : null)}
-            //                         {this.renderTopics(creature.digitalFootprint ? creature.digitalFootprint.topics : null)}
-            //                     </div>
-            //                 </div>
-            //                 {this.renderBios(creature.socialProfiles)}
-            //             </div>
-            //         </Col>
-            //     </Row>
-            // );
+            return _react2.default.createElement(
+                _reactFlexboxGrid.Row,
+                { style: styles.card },
+                _react2.default.createElement(
+                    _reactFlexboxGrid.Col,
+                    { lg: 4, md: 4, sm: 12 },
+                    this.renderPhotos(creature.photos)
+                ),
+                _react2.default.createElement(
+                    _reactFlexboxGrid.Col,
+                    { lg: 1, md: 1, sm: 12 },
+                    this.renderSocialLinks(creature.socialProfiles),
+                    this.renderSocialMetrics(creature.socialProfiles)
+                ),
+                _react2.default.createElement(
+                    _reactFlexboxGrid.Col,
+                    { lg: 6, md: 6, sm: 12 },
+                    this.renderName(creature.contactInfo),
+                    this.renderLocation(creature.demographics),
+                    this.renderOrganizations(creature.organizations),
+                    this.renderWebSites(creature.contactInfo ? creature.contactInfo.websites : null),
+                    this.renderTopics(creature.digitalFootprint ? creature.digitalFootprint.topics : null),
+                    this.renderBios(creature.socialProfiles)
+                )
+            );
 
             return _react2.default.createElement(
                 'div',
@@ -126,15 +128,35 @@ var CreatureHorizontalCard = function (_Component) {
             );
         }
     }, {
-        key: 'renderPhoto',
-        value: function renderPhoto(data) {
+        key: 'renderPhotos',
+        value: function renderPhotos(data) {
             // console.log("photos", data);
             if (this.props.showPhoto === false || !data) return null;
-            var photoUrl = data[0].url;
+            var photo = data.shift();
             return _react2.default.createElement(
                 'div',
-                { style: styles.photos.container },
-                _react2.default.createElement('img', { src: photoUrl, style: styles.photos.photo })
+                null,
+                _react2.default.createElement(
+                    'div',
+                    { style: styles.photos.container },
+                    _react2.default.createElement('img', { src: photo.url, style: styles.photos.photo })
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { style: styles.photos.containerSmall },
+                    data.map(function (photo) {
+                        return _react2.default.createElement('div', { style: {
+                                width: '30%',
+                                minHeight: 100,
+                                // maxWidth: 200,
+                                // maxHeight: 200,
+                                margin: 4,
+                                overflow: 'hidden',
+                                background: 'url(' + photo.url + ')',
+                                backgroundSize: 'cover' }
+                        });
+                    })
+                )
             );
         }
     }, {
@@ -193,7 +215,7 @@ var CreatureHorizontalCard = function (_Component) {
                     { style: styles.social.metric },
                     _react2.default.createElement(
                         'a',
-                        { href: profile.url },
+                        { style: { textDecoration: 'none', color: 'inherit' }, href: profile.url },
                         _react2.default.createElement(
                             'span',
                             { style: styles.socialMetrics.followers },
@@ -213,7 +235,7 @@ var CreatureHorizontalCard = function (_Component) {
 
             return _react2.default.createElement(
                 'div',
-                { style: styles.social.metrics },
+                null,
                 profiles
             );
         }
@@ -243,11 +265,10 @@ var CreatureHorizontalCard = function (_Component) {
                 'div',
                 { style: styles.organizations },
                 _react2.default.createElement(
-                    'b',
-                    null,
+                    'span',
+                    { style: styles.subTitle },
                     'Organiza\xE7\xF5es'
                 ),
-                _react2.default.createElement('br', null),
                 _react2.default.createElement(
                     'div',
                     null,
@@ -275,11 +296,10 @@ var CreatureHorizontalCard = function (_Component) {
                 'div',
                 { style: styles.topics },
                 _react2.default.createElement(
-                    'b',
-                    null,
+                    'span',
+                    { style: styles.subTitle },
                     'T\xF3picos'
                 ),
-                _react2.default.createElement('br', null),
                 _react2.default.createElement(
                     'div',
                     null,
@@ -312,11 +332,10 @@ var CreatureHorizontalCard = function (_Component) {
                 'div',
                 { style: styles.sites },
                 _react2.default.createElement(
-                    'b',
-                    null,
+                    'span',
+                    { style: styles.subTitle },
                     'Sites'
                 ),
-                _react2.default.createElement('br', null),
                 _react2.default.createElement(
                     'div',
                     null,
@@ -350,7 +369,7 @@ var CreatureHorizontalCard = function (_Component) {
                 return _react2.default.createElement(
                     'div',
                     { style: styles.bio },
-                    profile.bio
+                    strip(profile.bio)
                 );
             });
 
@@ -359,6 +378,12 @@ var CreatureHorizontalCard = function (_Component) {
             return _react2.default.createElement(
                 'div',
                 { style: styles.bios },
+                _react2.default.createElement(
+                    'span',
+                    { style: styles.subTitle },
+                    'Resumos'
+                ),
+                _react2.default.createElement('br', null),
                 bios
             );
         }
@@ -368,8 +393,9 @@ var CreatureHorizontalCard = function (_Component) {
 }(_react.Component);
 
 var styles = {
-    criaturaCard: {
-        borderColor: 'black',
+    card: {
+        boxShadow: '0 2px 2px 2px rgba(140, 140, 140, 0.11)',
+        borderColor: '#c3c3c3',
         borderWidth: 1,
         borderStyle: 'solid',
         display: 'flex',
@@ -379,25 +405,40 @@ var styles = {
         marginTop: 8,
         marginRight: 8
     },
-    criaturaData: {
-        display: 'flex',
-        flexDirection: 'column'
-    },
     criaturaColumn: {
         display: 'flex',
         flexDirection: 'row'
     },
     photos: {
-        container: {},
-        photo: { width: '100%' }
+        containerSmall: {
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'flex-start'
+        },
+        photo: {
+            width: '100%',
+            objectFit: 'cover'
+        },
+        photoSmall: {
+            width: '30%',
+            maxWidth: 100,
+            maxHeight: 100,
+            margin: 4,
+            overflow: 'hidden'
+        }
     },
     name: {
         fontSize: 28,
-        lineHeight: '1.5'
+        lineHeight: '1.5',
+        textAlign: 'center',
+        fontWeight: 700,
+        color: '#313131'
     },
     location: {
         fontSize: 16,
-        lineHeight: '2'
+        lineHeight: '2',
+        fontWeight: 300,
+        textAlign: 'center'
     },
     social: {
         profiles: {
@@ -414,8 +455,8 @@ var styles = {
 
     },
     socialIcon: {
-        width: 32,
-        margin: 4
+        width: 28,
+        margin: 3
     },
 
     socialMetrics: {
@@ -444,15 +485,24 @@ var styles = {
         marginBottom: 12
     },
     bios: {
-        display: 'flex',
-        flexDirection: 'column'
+        fontSize: 14
     },
     bio: {
-        fontSize: 14,
-        marginBottom: 12
+        marginBottom: 4
+    },
+    subTitle: {
+        fontSize: 18,
+        fontWeight: 700,
+        lineHeight: '1.5'
     }
 
 };
+
+function strip(html) {
+    var tmp = document.createElement("DIV");
+    tmp.innerHTML = html;
+    return tmp.textContent || tmp.innerText || "";
+}
 
 CreatureHorizontalCard.propTypes = {
     creature: _propTypes2.default.object

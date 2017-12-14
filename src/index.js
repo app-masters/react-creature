@@ -1,1 +1,3 @@
-export {default as CreatureHorizontalCard} from './CreatureHorizontalCard';
+import CreatureHorizontalCard from './CreatureHorizontalCard';
+import CreatureSimpleBox from './CreatureSimpleBox';
+export {CreatureHorizontalCard,CreatureSimpleBox};

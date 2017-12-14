@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import images from '../img/';
 import {Col, Row} from "react-flexbox-grid";
+import Util from "./util";
 
 // import {Col, Row} from "react-grid-system";
 
@@ -74,6 +75,7 @@ class CreatureHorizontalCard extends Component {
         if (this.props.showPhoto === false || !data)
             return null;
         let photo = data.shift();
+        if (!photo) return null;
         return (
             <div>
                 <div style={styles.photos.container}>
@@ -254,7 +256,7 @@ class CreatureHorizontalCard extends Component {
             if (!profile.bio) return;
             return (
                 <div style={styles.bio}>
-                    {strip(profile.bio)}
+                    {Util.strip(profile.bio)}
                 </div>
             );
         });
@@ -377,12 +379,6 @@ const styles = {
     }
 
 };
-
-function strip(html) {
-    let tmp = document.createElement("DIV");
-    tmp.innerHTML = html;
-    return tmp.textContent || tmp.innerText || "";
-}
 
 
 CreatureHorizontalCard.propTypes = {

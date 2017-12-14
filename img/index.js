@@ -7,10 +7,11 @@ import github from './001-github.svg';
 import flickr from './002-flickr.svg';
 import link from './link.svg';
 import linkTo from './link-to.svg';
+import instagram from './013-instagram.svg';
 
 export default {
     facebook, linkedin,
     twitter, foursquare, google,
     github, flickr,
-    link, linkTo
+    link, linkTo, instagram
 };
