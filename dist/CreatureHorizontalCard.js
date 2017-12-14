@@ -20,6 +20,10 @@ var _img2 = _interopRequireDefault(_img);
 
 var _reactFlexboxGrid = require('react-flexbox-grid');
 
+var _util = require('./util');
+
+var _util2 = _interopRequireDefault(_util);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -133,6 +137,7 @@ var CreatureHorizontalCard = function (_Component) {
             // console.log("photos", data);
             if (this.props.showPhoto === false || !data) return null;
             var photo = data.shift();
+            if (!photo) return null;
             return _react2.default.createElement(
                 'div',
                 null,
@@ -369,7 +374,7 @@ var CreatureHorizontalCard = function (_Component) {
                 return _react2.default.createElement(
                     'div',
                     { style: styles.bio },
-                    strip(profile.bio)
+                    _util2.default.strip(profile.bio)
                 );
             });
 
@@ -497,12 +502,6 @@ var styles = {
     }
 
 };
-
-function strip(html) {
-    var tmp = document.createElement("DIV");
-    tmp.innerHTML = html;
-    return tmp.textContent || tmp.innerText || "";
-}
 
 CreatureHorizontalCard.propTypes = {
     creature: _propTypes2.default.object

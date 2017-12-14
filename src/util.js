@@ -11,6 +11,42 @@ class Util {
         });
 
     }
+
+    static getCreatureOrPerson(props) {
+        if (props.creature)
+            return props.creature;
+        if (props.person) {
+            let person = props.person;
+
+            let socialProfiles = Util.socialObjToArray(person);
+
+            let creature = {
+                photos: [
+                    {url: person.photoUrl}
+                ],
+                contactInfo: {
+                    fullName: person.name
+                },
+                socialProfiles
+            };
+
+            return creature;
+        }
+
+
+    }
+
+    static socialObjToArray(person) {
+        let result = [];
+        Util.socialNetworks.map(social => {
+            if (person[social])
+                result.push({"typeId": social, "url": person[social]});
+        });
+
+        return result;
+    }
 }
+
+Util.socialNetworks = ['facebook', 'twitter', 'instagram', 'linkedin'];
 
 export default Util;

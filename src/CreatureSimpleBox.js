@@ -8,7 +8,7 @@ import Util from "./util";
 
 class CreatureSimpleBox extends Component {
     render() {
-        let creature = this.props.creature;
+        let creature = Util.getCreatureOrPerson(this.props);
         console.log("creature..", this.props.creature);
 
         if (creature.status === 404) {
@@ -130,7 +130,8 @@ const styles = {
     },
     socialIcon: {
         width: 24,
-        margin: 4
+        margin: 4,
+        maxWidth: '17%',
     }
 };
 
