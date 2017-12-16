@@ -9,7 +9,7 @@ import Util from "./util";
 class CreatureHorizontalCard extends Component {
     render() {
         let creature = this.props.creature;
-        console.log("creature..", this.props.creature);
+        // console.log("creature..", this.props.creature);
 
         if (creature.status === 404) {
             return (
@@ -85,7 +85,7 @@ class CreatureHorizontalCard extends Component {
                 <div style={styles.photos.containerSmall}>
                     {data.map(photo => {
                         if (!photo) return;
-                        console.log(photo);
+                        // console.log(photo);
                         return (
                             <div style={
                                 {
@@ -123,7 +123,7 @@ class CreatureHorizontalCard extends Component {
 
     renderSocialLinks(data) {
         // console.log("socialProfiles", data);
-        if (this.props.showSocial === false || !data)
+        if (this.props.showSocial === false || !data || data.length===0)
             return null;
         // Move icon method to utils
         // Implement mostRelevant to social links
@@ -148,7 +148,7 @@ class CreatureHorizontalCard extends Component {
 
     renderSocialMetrics(data) {
         // console.log("socialProfiles", data);
-        if (this.props.showSocialMetrics === false || !data)
+        if (this.props.showSocialMetrics === false || !data || data.length===0)
             return null;
         let profiles = data.map(profile => {
             if (!profile.followers) return;
@@ -173,8 +173,8 @@ class CreatureHorizontalCard extends Component {
     }
 
     renderOrganizations(data) {
-        console.log("organizations", data);
-        if (this.props.showOrganizations === false || !data)
+        // console.log("organizations", data);
+        if (this.props.showOrganizations === false || !data || data.length===0)
             return null;
         let organizations = data.map(organization => {
             let style = organization.current ? styles.organizationCurrent : styles.organizationPast;
@@ -198,7 +198,7 @@ class CreatureHorizontalCard extends Component {
 
     renderTopics(data) {
         // console.log("topics", data);
-        if (this.props.showTopics === false || !data)
+        if (this.props.showTopics === false || !data || data.length===0)
             return null;
         let topics = data.map(topic => {
             return (
@@ -218,7 +218,7 @@ class CreatureHorizontalCard extends Component {
 
     renderWebSites(data) {
         // console.log("topics", data);
-        if (this.props.showWebSites === false || !data)
+        if (this.props.showWebSites === false || !data || data.length===0)
             return null;
         let sites = data.map(site => {
             let urlDisplay = site.url.replace("https://", "").replace("http://", "");
@@ -236,7 +236,7 @@ class CreatureHorizontalCard extends Component {
     }
 
     renderLocation(data) {
-        console.log("location", data);
+        // console.log("location", data);
         if (this.props.showLocation === false || !data)
             return null;
         let location = null;
@@ -253,7 +253,7 @@ class CreatureHorizontalCard extends Component {
 
     renderBios(data) {
         // console.log("socialProfiles", data);
-        if (this.props.showBios === false || !data)
+        if (this.props.showBios === false || !data || data.length===0)
             return null;
         let bios = data.map(profile => {
             if (!profile.bio) return;
