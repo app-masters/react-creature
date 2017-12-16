@@ -39,7 +39,7 @@ class CreatureSimpleBox extends Component {
         // console.log("photos", data);
         if (this.props.showPhoto === false || !data)
             return null;
-        let photo = data.shift();
+        let photo = JSON.parse(JSON.stringify(data.shift()));
         // if (!photo) return null;
         return (
             <div>

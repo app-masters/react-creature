@@ -46,7 +46,7 @@ var CreatureSimpleBox = function (_Component) {
     _createClass(CreatureSimpleBox, [{
         key: 'render',
         value: function render() {
-            var creature = this.props.creature;
+            var creature = _util2.default.getCreatureOrPerson(this.props);
             console.log("creature..", this.props.creature);
 
             if (creature.status === 404) {
@@ -191,7 +191,8 @@ var styles = {
     },
     socialIcon: {
         width: 24,
-        margin: 4
+        margin: 4,
+        maxWidth: '17%'
     }
 };
 

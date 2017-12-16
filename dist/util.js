@@ -27,9 +27,41 @@ var Util = function () {
                 return ['facebook', 'twitter', 'linkedin', 'instagram'].indexOf(profile.typeId) > -1;
             });
         }
+    }, {
+        key: "getCreatureOrPerson",
+        value: function getCreatureOrPerson(props) {
+            if (props.creature) return props.creature;
+            if (props.person) {
+                var person = props.person;
+
+                var socialProfiles = Util.socialObjToArray(person);
+
+                var creature = {
+                    photos: [{ url: person.photoUrl }],
+                    contactInfo: {
+                        fullName: person.name
+                    },
+                    socialProfiles: socialProfiles
+                };
+
+                return creature;
+            }
+        }
+    }, {
+        key: "socialObjToArray",
+        value: function socialObjToArray(person) {
+            var result = [];
+            Util.socialNetworks.map(function (social) {
+                if (person[social]) result.push({ "typeId": social, "url": person[social] });
+            });
+
+            return result;
+        }
     }]);
 
     return Util;
 }();
+
+Util.socialNetworks = ['facebook', 'twitter', 'instagram', 'linkedin'];
 
 exports.default = Util;

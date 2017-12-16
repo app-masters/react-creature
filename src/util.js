@@ -7,7 +7,7 @@ class Util {
 
     static getSocialMostRelevant(data) {
         return data.filter(profile => {
-            return ['facebook', 'twitter', 'linkedin', 'instagram'].indexOf(profile.typeId) > -1;
+            return ['facebook', 'twitter', 'linkedin', 'instagram', 'pinterest'].indexOf(profile.typeId) > -1;
         });
 
     }
@@ -47,6 +47,6 @@ class Util {
     }
 }
 
-Util.socialNetworks = ['facebook', 'twitter', 'instagram', 'linkedin'];
+Util.socialNetworks = ['facebook', 'twitter', 'instagram', 'linkedin', 'pinterest'];
 
 export default Util;

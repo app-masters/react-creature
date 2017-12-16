@@ -74,6 +74,7 @@ class CreatureHorizontalCard extends Component {
         // console.log("photos", data);
         if (this.props.showPhoto === false || !data)
             return null;
+        let data = JSON.parse(JSON.stringify(data));
         let photo = data.shift();
         if (!photo) return null;
         return (
@@ -83,6 +84,8 @@ class CreatureHorizontalCard extends Component {
                 </div>
                 <div style={styles.photos.containerSmall}>
                     {data.map(photo => {
+                        if (!photo) return;
+                        console.log(photo);
                         return (
                             <div style={
                                 {
@@ -93,13 +96,13 @@ class CreatureHorizontalCard extends Component {
                                     margin: 4,
                                     overflow: 'hidden',
                                     background: 'url(' + photo.url + ')',
-                                    backgroundSize: 'cover'}
+                                    backgroundSize: 'cover'
+                                }
                             }
                             >
-                                {/*<img src={photo.url} style={styles.photos.photo}/>*/}
+                                <img src={photo.url} style={styles.photos.photo}/>
                             </div>
-                        )
-                            ;
+                        );
                     })}
                 </div>
             </div>);
