@@ -74,7 +74,7 @@ class CreatureHorizontalCard extends Component {
         // console.log("photos", data);
         if (this.props.showPhoto === false || !data)
             return null;
-        let data = JSON.parse(JSON.stringify(data));
+        data = JSON.parse(JSON.stringify(data));
         let photo = data.shift();
         if (!photo) return null;
         return (
