@@ -46,7 +46,7 @@ var CreatureHorizontalCard = function (_Component) {
     _createClass(CreatureHorizontalCard, [{
         key: 'render',
         value: function render() {
-            var creature = this.props.creature;
+            var creature = _util2.default.getCreatureOrPerson(this.props);
             // console.log("creature..", this.props.creature);
 
             if (creature.status === 404) {
@@ -135,7 +135,7 @@ var CreatureHorizontalCard = function (_Component) {
         key: 'renderPhotos',
         value: function renderPhotos(data) {
             // console.log("photos", data);
-            if (this.props.showPhoto === false || !data) return null;
+            if (this.props.showPhoto === false || !data || data.length === 0) return null;
             data = JSON.parse(JSON.stringify(data));
             var photo = data.shift();
             if (!photo) return null;
@@ -416,7 +416,8 @@ var styles = {
         padding: 8,
         marginLeft: 8,
         marginTop: 8,
-        marginRight: 8
+        marginRight: 8,
+        flex: 1
     },
     criaturaColumn: {
         display: 'flex',

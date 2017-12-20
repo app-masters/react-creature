@@ -14,9 +14,9 @@ class Util {
 
     static getCreatureOrPerson(props) {
         if (props.creature)
-            return props.creature;
+            return JSON.parse(JSON.stringify(props.creature));
         if (props.person) {
-            let person = props.person;
+            let person = JSON.parse(JSON.stringify(props.person));
 
             let socialProfiles = Util.socialObjToArray(person);
 

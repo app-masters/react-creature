@@ -87,7 +87,7 @@ var CreatureSimpleBox = function (_Component) {
         key: 'renderPhoto',
         value: function renderPhoto(data) {
             // console.log("photos", data);
-            if (this.props.showPhoto === false || !data) return null;
+            if (this.props.showPhoto === false || !data || data.length === 0) return null;
             var photo = JSON.parse(JSON.stringify(data.shift()));
             // if (!photo) return null;
             return _react2.default.createElement(
@@ -186,7 +186,8 @@ var styles = {
     },
     social: {
         profiles: {
-            flex: 1
+            flex: 1,
+            justifyContent: 'center'
         }
     },
     socialIcon: {
