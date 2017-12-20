@@ -8,7 +8,7 @@ import Util from "./util";
 
 class CreatureHorizontalCard extends Component {
     render() {
-        let creature = this.props.creature;
+        let creature = Util.getCreatureOrPerson(this.props);
         // console.log("creature..", this.props.creature);
 
         if (creature.status === 404) {
@@ -72,7 +72,7 @@ class CreatureHorizontalCard extends Component {
 
     renderPhotos(data) {
         // console.log("photos", data);
-        if (this.props.showPhoto === false || !data)
+        if (this.props.showPhoto === false || !data || data.length===0)
             return null;
         data = JSON.parse(JSON.stringify(data));
         let photo = data.shift();
@@ -286,7 +286,8 @@ const styles = {
         padding: 8,
         marginLeft: 8,
         marginTop: 8,
-        marginRight: 8
+        marginRight: 8,
+        flex: 1
     },
     criaturaColumn: {
         display: 'flex',

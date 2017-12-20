@@ -37,7 +37,7 @@ class CreatureSimpleBox extends Component {
 
     renderPhoto(data) {
         // console.log("photos", data);
-        if (this.props.showPhoto === false || !data)
+        if (this.props.showPhoto === false || !data || data.length===0)
             return null;
         let photo = JSON.parse(JSON.stringify(data.shift()));
         // if (!photo) return null;
@@ -125,7 +125,8 @@ const styles = {
     },
     social: {
         profiles: {
-            flex: 1
+            flex: 1,
+            justifyContent:'center'
         },
     },
     socialIcon: {

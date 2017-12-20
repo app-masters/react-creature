@@ -47,7 +47,7 @@ var CreatureHorizontalCard = function (_Component) {
         key: 'render',
         value: function render() {
             var creature = this.props.creature;
-            console.log("creature..", this.props.creature);
+            // console.log("creature..", this.props.creature);
 
             if (creature.status === 404) {
                 return _react2.default.createElement(
@@ -152,7 +152,7 @@ var CreatureHorizontalCard = function (_Component) {
                     { style: styles.photos.containerSmall },
                     data.map(function (photo) {
                         if (!photo) return;
-                        console.log(photo);
+                        // console.log(photo);
                         return _react2.default.createElement(
                             'div',
                             { style: {
@@ -190,7 +190,7 @@ var CreatureHorizontalCard = function (_Component) {
         key: 'renderSocialLinks',
         value: function renderSocialLinks(data) {
             // console.log("socialProfiles", data);
-            if (this.props.showSocial === false || !data) return null;
+            if (this.props.showSocial === false || !data || data.length === 0) return null;
             // Move icon method to utils
             // Implement mostRelevant to social links
             var profiles = data.map(function (profile) {
@@ -220,7 +220,7 @@ var CreatureHorizontalCard = function (_Component) {
         key: 'renderSocialMetrics',
         value: function renderSocialMetrics(data) {
             // console.log("socialProfiles", data);
-            if (this.props.showSocialMetrics === false || !data) return null;
+            if (this.props.showSocialMetrics === false || !data || data.length === 0) return null;
             var profiles = data.map(function (profile) {
                 if (!profile.followers) return;
                 return _react2.default.createElement(
@@ -255,8 +255,8 @@ var CreatureHorizontalCard = function (_Component) {
     }, {
         key: 'renderOrganizations',
         value: function renderOrganizations(data) {
-            console.log("organizations", data);
-            if (this.props.showOrganizations === false || !data) return null;
+            // console.log("organizations", data);
+            if (this.props.showOrganizations === false || !data || data.length === 0) return null;
             var organizations = data.map(function (organization) {
                 var style = organization.current ? styles.organizationCurrent : styles.organizationPast;
                 return _react2.default.createElement(
@@ -293,7 +293,7 @@ var CreatureHorizontalCard = function (_Component) {
         key: 'renderTopics',
         value: function renderTopics(data) {
             // console.log("topics", data);
-            if (this.props.showTopics === false || !data) return null;
+            if (this.props.showTopics === false || !data || data.length === 0) return null;
             var topics = data.map(function (topic) {
                 return _react2.default.createElement(
                     'span',
@@ -324,7 +324,7 @@ var CreatureHorizontalCard = function (_Component) {
         key: 'renderWebSites',
         value: function renderWebSites(data) {
             // console.log("topics", data);
-            if (this.props.showWebSites === false || !data) return null;
+            if (this.props.showWebSites === false || !data || data.length === 0) return null;
             var sites = data.map(function (site) {
                 var urlDisplay = site.url.replace("https://", "").replace("http://", "");
                 return _react2.default.createElement(
@@ -359,7 +359,7 @@ var CreatureHorizontalCard = function (_Component) {
     }, {
         key: 'renderLocation',
         value: function renderLocation(data) {
-            console.log("location", data);
+            // console.log("location", data);
             if (this.props.showLocation === false || !data) return null;
             var location = null;
             if (data.locationGeneral) location = data.locationGeneral;else if (data.locationDeduced) location = data.locationDeduced;
@@ -376,7 +376,7 @@ var CreatureHorizontalCard = function (_Component) {
         key: 'renderBios',
         value: function renderBios(data) {
             // console.log("socialProfiles", data);
-            if (this.props.showBios === false || !data) return null;
+            if (this.props.showBios === false || !data || data.length === 0) return null;
             var bios = data.map(function (profile) {
                 if (!profile.bio) return;
                 return _react2.default.createElement(
