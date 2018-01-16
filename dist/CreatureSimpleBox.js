@@ -87,8 +87,11 @@ var CreatureSimpleBox = function (_Component) {
         key: 'renderPhoto',
         value: function renderPhoto(data) {
             // console.log("photos", data);
-            if (this.props.showPhoto === false || !data || data.length === 0) return null;
-            var photo = JSON.parse(JSON.stringify(data.shift()));
+            var photoUrl = void 0;
+            if (this.props.showPhoto === false || !data || data.length === 0) photoUrl = "http://servotech.in/wp-content/uploads/2016/10/user-icon-placeholder.png";else {
+                var photo = JSON.parse(JSON.stringify(data.shift()));
+                photoUrl = photo.url;
+            }
             // if (!photo) return null;
             return _react2.default.createElement(
                 'div',
@@ -96,7 +99,7 @@ var CreatureSimpleBox = function (_Component) {
                 _react2.default.createElement(
                     'div',
                     { style: styles.photos.container },
-                    _react2.default.createElement('img', { src: photo.url, style: styles.photos.photo })
+                    _react2.default.createElement('img', { src: photoUrl, style: styles.photos.photo })
                 )
             );
         }
@@ -127,7 +130,7 @@ var CreatureSimpleBox = function (_Component) {
                 icon = _img2.default[profile.typeId];
                 return _react2.default.createElement(
                     'a',
-                    { href: profile.url },
+                    { href: profile.url, style: styles.social.profile },
                     _react2.default.createElement('img', { style: styles.socialIcon, src: icon })
                 );
             });
@@ -186,14 +189,21 @@ var styles = {
     },
     social: {
         profiles: {
+            display: "flex",
             flex: 1,
             justifyContent: 'center'
+        },
+        profile: {
+            flex: 1,
+            minHeight: 42,
+            maxWidth: '42',
+            padding: 2,
+            textAlign: 'center'
         }
     },
     socialIcon: {
-        width: 24,
-        margin: 4,
-        maxWidth: '17%'
+        width: '100%',
+        maxWidth: 38
     }
 };
 
