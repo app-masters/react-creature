@@ -30,9 +30,9 @@ var Util = function () {
     }, {
         key: "getCreatureOrPerson",
         value: function getCreatureOrPerson(props) {
-            if (props.creature) return props.creature;
+            if (props.creature) return JSON.parse(JSON.stringify(props.creature));
             if (props.person) {
-                var person = props.person;
+                var person = JSON.parse(JSON.stringify(props.person));
 
                 var socialProfiles = Util.socialObjToArray(person);
 

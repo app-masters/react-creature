@@ -37,14 +37,18 @@ class CreatureSimpleBox extends Component {
 
     renderPhoto(data) {
         // console.log("photos", data);
+        let photoUrl;
         if (this.props.showPhoto === false || !data || data.length===0)
-            return null;
-        let photo = JSON.parse(JSON.stringify(data.shift()));
+            photoUrl = "http://servotech.in/wp-content/uploads/2016/10/user-icon-placeholder.png";
+        else {
+            let photo = JSON.parse(JSON.stringify(data.shift()));
+            photoUrl = photo.url;
+        }
         // if (!photo) return null;
         return (
             <div>
                 <div style={styles.photos.container}>
-                    <img src={photo.url} style={styles.photos.photo}/>
+                    <img src={photoUrl} style={styles.photos.photo}/>
                 </div>
             </div>);
     }
@@ -72,7 +76,9 @@ class CreatureSimpleBox extends Component {
         let profiles = data.map(profile => {
             let icon = null;
             icon = images[profile.typeId];
-            return (<a href={profile.url}><img style={styles.socialIcon} src={icon}/></a>);
+            return (<a href={profile.url} style={styles.social.profile}>
+                <img style={styles.socialIcon} src={icon}/>
+            </a>);
         });
 
 
@@ -125,14 +131,21 @@ const styles = {
     },
     social: {
         profiles: {
+            display: "flex",
             flex: 1,
             justifyContent:'center'
         },
+        profile: {
+            flex: 1,
+            minHeight: 42,
+            maxWidth: '42',
+            padding: 2,
+            textAlign: 'center'
+        }
     },
     socialIcon: {
-        width: 24,
-        margin: 4,
-        maxWidth: '17%',
+        width: '100%',
+        maxWidth: 38,
     }
 };
 
