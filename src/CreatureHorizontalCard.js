@@ -9,7 +9,7 @@ import Util from "./util";
 class CreatureHorizontalCard extends Component {
     render() {
         let creature = Util.getCreatureOrPerson(this.props);
-        // console.log("creature..", this.props.creature);
+        // console.log("creature..", creature);
 
         if (creature.status === 404) {
             return (
@@ -27,6 +27,7 @@ class CreatureHorizontalCard extends Component {
             );
         }
 
+
         return (
             <Row style={styles.card}>
                 <Col lg={4} md={4} sm={12}>
@@ -37,7 +38,7 @@ class CreatureHorizontalCard extends Component {
                     {this.renderSocialMetrics(creature.socialProfiles)}
                 </Col>
                 <Col lg={6} md={6} sm={12}>
-                    {this.renderName(creature.contactInfo)}
+                    {this.renderNameEmail(creature.contactInfo, creature.email)}
                     {this.renderLocation(creature.demographics)}
                     {this.renderOrganizations(creature.organizations)}
                     {this.renderWebSites(creature.contactInfo ? creature.contactInfo.websites : null)}
@@ -72,11 +73,21 @@ class CreatureHorizontalCard extends Component {
 
     renderPhotos(data) {
         // console.log("photos", data);
-        if (this.props.showPhoto === false || !data || data.length===0)
+        if (this.props.showPhoto === false || !data || data.length === 0)
             return null;
         data = JSON.parse(JSON.stringify(data));
         let photo = data.shift();
         if (!photo) return null;
+
+        if (this.props.showOnePhoto)
+            return (
+                <div>
+                    <div style={styles.photos.container}>
+                        <img src={photo.url} style={styles.photos.photo}/>
+                    </div>
+                </div>
+            );
+
         return (
             <div>
                 <div style={styles.photos.container}>
@@ -109,7 +120,7 @@ class CreatureHorizontalCard extends Component {
     }
 
 
-    renderName(data) {
+    renderNameEmail(data, mail) {
         if (this.props.showName === false || !data)
             return null;
         let name = null;
@@ -118,16 +129,28 @@ class CreatureHorizontalCard extends Component {
         if (!name)
             return null;
 
-        return (<div style={styles.name}>{name}</div>);
+        let email = null;
+        if (this.props.showEmail)
+            email = <small style={styles.email}>{mail}</small>;
+
+        return (
+            <div>
+                <div style={styles.name}>
+                    {name}
+                </div>
+                {email}
+            </div>
+        );
     }
 
     renderSocialLinks(data) {
         // console.log("socialProfiles", data);
-        if (this.props.showSocial === false || !data || data.length===0)
+        if (this.props.showSocial === false || !data || data.length === 0)
             return null;
         // Move icon method to utils
         // Implement mostRelevant to social links
         let profiles = data.map(profile => {
+            if (profile.typeId === "gravatar") return null;
             let icon = null;
             icon = images[profile.typeId];
             if (!icon) {
@@ -145,10 +168,9 @@ class CreatureHorizontalCard extends Component {
         return (<div style={styles.social.profiles}>{profiles}</div>);
     }
 
-
     renderSocialMetrics(data) {
         // console.log("socialProfiles", data);
-        if (this.props.showSocialMetrics === false || !data || data.length===0)
+        if (this.props.showSocialMetrics === false || !data || data.length === 0)
             return null;
         let profiles = data.map(profile => {
             if (!profile.followers) return;
@@ -174,8 +196,10 @@ class CreatureHorizontalCard extends Component {
 
     renderOrganizations(data) {
         // console.log("organizations", data);
-        if (this.props.showOrganizations === false || !data || data.length===0)
+        if (this.props.showOrganizations === false || !data || data.length === 0)
             return null;
+        if (this.props.showOneOrganization)
+            data = data.splice(0, 1);
         let organizations = data.map(organization => {
             let style = organization.current ? styles.organizationCurrent : styles.organizationPast;
             return (
@@ -191,14 +215,14 @@ class CreatureHorizontalCard extends Component {
 
         return (
             <div style={styles.organizations}>
-                <span style={styles.subTitle}>Organizações</span>
+                <span style={styles.subTitle}>{this.props.showOneOrganization ? "Organização" : "Organizações"}</span>
                 <div>{organizations}</div>
             </div>);
     }
 
     renderTopics(data) {
         // console.log("topics", data);
-        if (this.props.showTopics === false || !data || data.length===0)
+        if (this.props.showTopics === false || !data || data.length === 0)
             return null;
         let topics = data.map(topic => {
             return (
@@ -218,7 +242,7 @@ class CreatureHorizontalCard extends Component {
 
     renderWebSites(data) {
         // console.log("topics", data);
-        if (this.props.showWebSites === false || !data || data.length===0)
+        if (this.props.showWebSites === false || !data || data.length === 0)
             return null;
         let sites = data.map(site => {
             let urlDisplay = site.url.replace("https://", "").replace("http://", "");
@@ -253,7 +277,7 @@ class CreatureHorizontalCard extends Component {
 
     renderBios(data) {
         // console.log("socialProfiles", data);
-        if (this.props.showBios === false || !data || data.length===0)
+        if (this.props.showBio === false || !data || data.length === 0)
             return null;
         let bios = data.map(profile => {
             if (!profile.bio) return;
@@ -312,6 +336,13 @@ const styles = {
                 overflow: 'hidden'
             }
         },
+    email: {
+        fontSize: 12,
+        lineHeight: '1.2',
+        textAlign: 'center',
+        fontWeight: 700,
+        color: '#414141'
+    },
     name: {
         fontSize: 28,
         lineHeight: '1.5',
@@ -359,7 +390,7 @@ const styles = {
     },
     organizationCurrent: {},
     organizationPast: {
-        color: '#7d7d7d',
+        color: '#636363',
         fontWeight: 300
     },
     sites: {

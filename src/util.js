@@ -13,8 +13,13 @@ class Util {
     }
 
     static getCreatureOrPerson(props) {
-        if (props.creature)
-            return JSON.parse(JSON.stringify(props.creature));
+        if (props.creature) {
+            let creatureObj = JSON.parse(JSON.stringify(props.creature));
+            if (creatureObj)
+                return creatureObj;
+            else
+                return props.creature;
+        }
         if (props.person) {
             let person = JSON.parse(JSON.stringify(props.person));
 
@@ -33,7 +38,6 @@ class Util {
             return creature;
         }
 
-
     }
 
     static socialObjToArray(person) {
@@ -44,6 +48,12 @@ class Util {
         });
 
         return result;
+    }
+
+    static formatNumber(n) {
+        return n.toFixed(0).replace(/./g, function (c, i, a) {
+            return i && c !== "." && ((a.length - i) % 3 === 0) ? '.' + c : c;
+        });
     }
 }
 

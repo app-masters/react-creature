@@ -199,11 +199,12 @@ var styles = {
             maxWidth: '42',
             padding: 2,
             textAlign: 'center'
+        },
+        icon: {
+            width: '100%',
+            maxWidth: 30,
+            maxHeight: 30
         }
-    },
-    socialIcon: {
-        width: '100%',
-        maxWidth: 38
     }
 };
 
