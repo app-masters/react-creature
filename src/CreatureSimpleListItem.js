@@ -10,12 +10,21 @@ class CreatureSimpleListItem extends Component {
         super();
         this.state = {
             viewport: {},
-            gridSize: null
+            gridSize: null,
+            creature: null,
         }
     }
 
-    render() {
+    componentWillMount(){
         let creature = Util.getCreatureOrPerson(this.props);
+        this.setState({creature});
+    }
+
+    render() {
+        let creature = this.state.creature;
+        if (!creature)
+            return (<div/>);
+
         // console.log("creature..", creature);
 
         if (creature.status === 404) {
@@ -63,7 +72,7 @@ class CreatureSimpleListItem extends Component {
         let photo = data.shift();
         if (!photo) return null;
         return (
-            <img src={photo.url} style={styles.photo}/>
+            <img src={photo.url} style={styles.photo} onClick={()=>this.props.onClick(this.state.creature)}/>
         );
     }
 
@@ -82,7 +91,7 @@ class CreatureSimpleListItem extends Component {
 
         return (
             <div style={styles.name}>
-                {name}
+                <a  onClick={()=>this.props.onClick(this.state.creature)}>{name}</a>
             </div>
         );
     }
@@ -111,10 +120,9 @@ class CreatureSimpleListItem extends Component {
         if (this.props.showInfluencer === false || !data)
             return null;
 
-
         return (
             <div style={styles.influencer}>
-                {Util.formatNumber(data.followersTotal)}
+                <a  onClick={()=>this.props.onClick(this.state.creature)}>{Util.formatNumber(data.followersTotal)}</a>
             </div>
         );
     }

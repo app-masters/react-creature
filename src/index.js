@@ -1,3 +1,4 @@
 import CreatureHorizontalCard from './CreatureHorizontalCard';
 import CreatureSimpleBox from './CreatureSimpleBox';
-export {CreatureHorizontalCard,CreatureSimpleBox};
+import CreatureSimpleListItem from './CreatureSimpleListItem';
+export {CreatureHorizontalCard,CreatureSimpleBox,CreatureSimpleListItem};

@@ -30,7 +30,10 @@ var Util = function () {
     }, {
         key: "getCreatureOrPerson",
         value: function getCreatureOrPerson(props) {
-            if (props.creature) return JSON.parse(JSON.stringify(props.creature));
+            if (props.creature) {
+                var creatureObj = JSON.parse(JSON.stringify(props.creature));
+                if (creatureObj) return creatureObj;else return props.creature;
+            }
             if (props.person) {
                 var person = JSON.parse(JSON.stringify(props.person));
 
@@ -56,6 +59,13 @@ var Util = function () {
             });
 
             return result;
+        }
+    }, {
+        key: "formatNumber",
+        value: function formatNumber(n) {
+            return n.toFixed(0).replace(/./g, function (c, i, a) {
+                return i && c !== "." && (a.length - i) % 3 === 0 ? '.' + c : c;
+            });
         }
     }]);
 

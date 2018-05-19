@@ -47,7 +47,7 @@ var CreatureHorizontalCard = function (_Component) {
         key: 'render',
         value: function render() {
             var creature = _util2.default.getCreatureOrPerson(this.props);
-            // console.log("creature..", this.props.creature);
+            // console.log("creature..", creature);
 
             if (creature.status === 404) {
                 return _react2.default.createElement(
@@ -92,7 +92,7 @@ var CreatureHorizontalCard = function (_Component) {
                 _react2.default.createElement(
                     _reactFlexboxGrid.Col,
                     { lg: 6, md: 6, sm: 12 },
-                    this.renderName(creature.contactInfo),
+                    this.renderNameEmail(creature.contactInfo, creature.email),
                     this.renderLocation(creature.demographics),
                     this.renderOrganizations(creature.organizations),
                     this.renderWebSites(creature.contactInfo ? creature.contactInfo.websites : null),
@@ -139,6 +139,17 @@ var CreatureHorizontalCard = function (_Component) {
             data = JSON.parse(JSON.stringify(data));
             var photo = data.shift();
             if (!photo) return null;
+
+            if (this.props.showOnePhoto) return _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                    'div',
+                    { style: styles.photos.container },
+                    _react2.default.createElement('img', { src: photo.url, style: styles.photos.photo })
+                )
+            );
+
             return _react2.default.createElement(
                 'div',
                 null,
@@ -173,17 +184,29 @@ var CreatureHorizontalCard = function (_Component) {
             );
         }
     }, {
-        key: 'renderName',
-        value: function renderName(data) {
+        key: 'renderNameEmail',
+        value: function renderNameEmail(data, mail) {
             if (this.props.showName === false || !data) return null;
             var name = null;
             if (data.fullName) name = data.fullName;else if (data.givenName) name = data.givenName;
             if (!name) return null;
 
+            var email = null;
+            if (this.props.showEmail) email = _react2.default.createElement(
+                'small',
+                { style: styles.email },
+                mail
+            );
+
             return _react2.default.createElement(
                 'div',
-                { style: styles.name },
-                name
+                null,
+                _react2.default.createElement(
+                    'div',
+                    { style: styles.name },
+                    name
+                ),
+                email
             );
         }
     }, {
@@ -194,6 +217,7 @@ var CreatureHorizontalCard = function (_Component) {
             // Move icon method to utils
             // Implement mostRelevant to social links
             var profiles = data.map(function (profile) {
+                if (profile.typeId === "gravatar") return null;
                 var icon = null;
                 icon = _img2.default[profile.typeId];
                 if (!icon) {
@@ -257,6 +281,7 @@ var CreatureHorizontalCard = function (_Component) {
         value: function renderOrganizations(data) {
             // console.log("organizations", data);
             if (this.props.showOrganizations === false || !data || data.length === 0) return null;
+            if (this.props.showOneOrganization) data = data.splice(0, 1);
             var organizations = data.map(function (organization) {
                 var style = organization.current ? styles.organizationCurrent : styles.organizationPast;
                 return _react2.default.createElement(
@@ -280,7 +305,7 @@ var CreatureHorizontalCard = function (_Component) {
                 _react2.default.createElement(
                     'span',
                     { style: styles.subTitle },
-                    'Organiza\xE7\xF5es'
+                    this.props.showOneOrganization ? "Organização" : "Organizações"
                 ),
                 _react2.default.createElement(
                     'div',
@@ -376,7 +401,7 @@ var CreatureHorizontalCard = function (_Component) {
         key: 'renderBios',
         value: function renderBios(data) {
             // console.log("socialProfiles", data);
-            if (this.props.showBios === false || !data || data.length === 0) return null;
+            if (this.props.showBio === false || !data || data.length === 0) return null;
             var bios = data.map(function (profile) {
                 if (!profile.bio) return;
                 return _react2.default.createElement(
@@ -441,6 +466,13 @@ var styles = {
             overflow: 'hidden'
         }
     },
+    email: {
+        fontSize: 12,
+        lineHeight: '1.2',
+        textAlign: 'center',
+        fontWeight: 700,
+        color: '#414141'
+    },
     name: {
         fontSize: 28,
         lineHeight: '1.5',
@@ -487,7 +519,7 @@ var styles = {
     },
     organizationCurrent: {},
     organizationPast: {
-        color: '#7d7d7d',
+        color: '#636363',
         fontWeight: 300
     },
     sites: {
