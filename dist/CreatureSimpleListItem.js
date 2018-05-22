@@ -42,15 +42,24 @@ var CreatureSimpleListItem = function (_Component) {
 
         _this.state = {
             viewport: {},
-            gridSize: null
+            gridSize: null,
+            creature: null
         };
         return _this;
     }
 
     _createClass(CreatureSimpleListItem, [{
+        key: 'componentWillMount',
+        value: function componentWillMount() {
+            var creature = _util2.default.getCreatureOrPerson(this.props);
+            this.setState({ creature: creature });
+        }
+    }, {
         key: 'render',
         value: function render() {
-            var creature = _util2.default.getCreatureOrPerson(this.props);
+            var creature = this.state.creature;
+            if (!creature) return _react2.default.createElement('div', null);
+
             // console.log("creature..", creature);
 
             if (creature.status === 404) {
@@ -112,15 +121,21 @@ var CreatureSimpleListItem = function (_Component) {
     }, {
         key: 'renderPhotos',
         value: function renderPhotos(data) {
+            var _this2 = this;
+
             if (this.props.showPhoto === false || !data || data.length === 0) return null;
             data = JSON.parse(JSON.stringify(data));
             var photo = data.shift();
             if (!photo) return null;
-            return _react2.default.createElement('img', { src: photo.url, style: styles.photo });
+            return _react2.default.createElement('img', { src: photo.url, style: styles.photo, onClick: function onClick() {
+                    return _this2.props.onClick(_this2.state.creature);
+                } });
         }
     }, {
         key: 'renderNameEmail',
         value: function renderNameEmail(data, mail) {
+            var _this3 = this;
+
             if (this.props.showName === false || !data) return null;
             var name = null;
             if (data.fullName) name = data.fullName;else if (data.givenName) name = data.givenName;
@@ -132,7 +147,13 @@ var CreatureSimpleListItem = function (_Component) {
             return _react2.default.createElement(
                 'div',
                 { style: styles.name },
-                name
+                _react2.default.createElement(
+                    'a',
+                    { onClick: function onClick() {
+                            return _this3.props.onClick(_this3.state.creature);
+                        } },
+                    name
+                )
             );
         }
     }, {
@@ -163,12 +184,20 @@ var CreatureSimpleListItem = function (_Component) {
     }, {
         key: 'renderInfluencer',
         value: function renderInfluencer(data) {
+            var _this4 = this;
+
             if (this.props.showInfluencer === false || !data) return null;
 
             return _react2.default.createElement(
                 'div',
                 { style: styles.influencer },
-                _util2.default.formatNumber(data.followersTotal)
+                _react2.default.createElement(
+                    'a',
+                    { onClick: function onClick() {
+                            return _this4.props.onClick(_this4.state.creature);
+                        } },
+                    _util2.default.formatNumber(data.followersTotal)
+                )
             );
         }
     }, {
@@ -222,11 +251,11 @@ var CreatureSimpleListItem = function (_Component) {
     }, {
         key: 'componentDidMount',
         value: function componentDidMount() {
-            var _this2 = this;
+            var _this5 = this;
 
             this._resize_mixin_callback();
             window.addEventListener('resize', function () {
-                _this2._resize_mixin_callback();
+                _this5._resize_mixin_callback();
             });
         }
     }, {
@@ -248,10 +277,10 @@ var CreatureSimpleListItem = function (_Component) {
     }, {
         key: 'componentWillUnmount',
         value: function componentWillUnmount() {
-            var _this3 = this;
+            var _this6 = this;
 
             window.removeEventListener('resize', function () {
-                _this3._resize_mixin_callback();
+                _this6._resize_mixin_callback();
             });
         }
     }]);
