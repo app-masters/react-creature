@@ -33,9 +33,9 @@ class CreatureHorizontalCard extends Component {
                 <Col lg={4} md={4} sm={12}>
                     {this.renderPhotos(creature.photos)}
                 </Col>
-                <Col lg={1} md={1} sm={12}>
+                <Col lg={1} md={1} sm={12} style={styles.column}>
+                    {this.renderInfluencer(creature.influencer)}
                     {this.renderSocialLinks(creature.socialProfiles)}
-                    {this.renderSocialMetrics(creature.socialProfiles)}
                 </Col>
                 <Col lg={6} md={6} sm={12}>
                     {this.renderNameEmail(creature.contactInfo, creature.email)}
@@ -102,12 +102,10 @@ class CreatureHorizontalCard extends Component {
                                 {
                                     width: '30%',
                                     minHeight: 100,
-                                    // maxWidth: 200,
-                                    // maxHeight: 200,
+                                    maxWidth: 200,
+                                    maxHeight: 200,
                                     margin: 4,
                                     overflow: 'hidden',
-                                    background: 'url(' + photo.url + ')',
-                                    backgroundSize: 'cover'
                                 }
                             }
                             >
@@ -154,8 +152,9 @@ class CreatureHorizontalCard extends Component {
             let icon = null;
             icon = images[profile.typeId];
             if (!icon) {
-                console.warn("Social icon not found: " + profile.typeId);
-                icon = images.link;
+                return null;
+                // console.warn("Social icon not found: " + profile.typeId);
+                // icon = images.link;
             }
             //profile.typeId;
             return (<a href={profile.url}><img style={styles.socialIcon} src={icon}/></a>);
@@ -168,30 +167,18 @@ class CreatureHorizontalCard extends Component {
         return (<div style={styles.social.profiles}>{profiles}</div>);
     }
 
-    renderSocialMetrics(data) {
-        // console.log("socialProfiles", data);
-        if (this.props.showSocialMetrics === false || !data || data.length === 0)
-            return null;
-        let profiles = data.map(profile => {
-            if (!profile.followers) return;
-            return (
-                <div style={styles.social.metric}>
-                    <a style={{textDecoration: 'none', color: 'inherit'}} href={profile.url}>
-                        <span style={styles.socialMetrics.followers}>{profile.followers}</span><br/>
-                        <span style={styles.socialMetrics.title}>{profile.typeName}</span>
-                    </a>
-                </div>
-            );
-        });
-
-
-        if (!profiles)
+    renderInfluencer(data) {
+        if (this.props.showInfluencer === false || !data)
             return null;
 
         return (
-            <div>
-                {profiles}
-            </div>);
+            <div style={styles.influencer}>
+                <a onClick={()=>this.props.onClick(this.state.creature)}>
+                    {Util.formatNumber(data.followersTotal)}<br/>
+                    <span style={{fontSize: '0.5em'}}>Seguidores</span>
+                </a>
+            </div>
+        );
     }
 
     renderOrganizations(data) {
@@ -313,6 +300,12 @@ const styles = {
         marginRight: 8,
         flex: 1
     },
+    column: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
     criaturaColumn: {
         display: 'flex',
         flexDirection: 'row'
@@ -326,6 +319,7 @@ const styles = {
             },
             photo: {
                 width: '100%',
+                height: '100%',
                 objectFit: 'cover'
             },
             photoSmall: {
@@ -356,9 +350,19 @@ const styles = {
         fontWeight: 300,
         textAlign: 'center'
     },
+    influencer: {
+        fontSize: '0.9em',
+        lineHeight: '1em',
+        textAlign: 'center',
+        fontWeight: 500
+    },
     social: {
         profiles: {
-            flex: 1
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'space-around',
         },
         metrics: {
             flex: 2,
@@ -385,7 +389,7 @@ const styles = {
             },
         },
     organizations: {
-        fontSize: 14,
+        fontSize: '0.8em',
         marginBottom: 12
     },
     organizationCurrent: {},
@@ -398,19 +402,20 @@ const styles = {
         marginBottom: 12
     },
     topics: {
-        fontSize: 14,
+        fontSize: '0.8em',
         marginBottom: 12
     },
     bios: {
-        fontSize: 14,
+        fontSize: '0.8em',
     },
     bio: {
         marginBottom: 4
     },
     subTitle: {
-        fontSize: 18,
+        fontSize: '1.2em',
         fontWeight: 700,
-        lineHeight: '1.5'
+        lineHeight: '1.5',
+        color: '#636363',
     }
 
 };
