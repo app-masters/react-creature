@@ -85,9 +85,9 @@ var CreatureHorizontalCard = function (_Component) {
                 ),
                 _react2.default.createElement(
                     _reactFlexboxGrid.Col,
-                    { lg: 1, md: 1, sm: 12 },
-                    this.renderSocialLinks(creature.socialProfiles),
-                    this.renderSocialMetrics(creature.socialProfiles)
+                    { lg: 1, md: 1, sm: 12, style: styles.column },
+                    this.renderInfluencer(creature.influencer),
+                    this.renderSocialLinks(creature.socialProfiles)
                 ),
                 _react2.default.createElement(
                     _reactFlexboxGrid.Col,
@@ -169,12 +169,10 @@ var CreatureHorizontalCard = function (_Component) {
                             { style: {
                                     width: '30%',
                                     minHeight: 100,
-                                    // maxWidth: 200,
-                                    // maxHeight: 200,
+                                    maxWidth: 200,
+                                    maxHeight: 200,
                                     margin: 4,
-                                    overflow: 'hidden',
-                                    background: 'url(' + photo.url + ')',
-                                    backgroundSize: 'cover'
+                                    overflow: 'hidden'
                                 }
                             },
                             _react2.default.createElement('img', { src: photo.url, style: styles.photos.photo })
@@ -221,8 +219,9 @@ var CreatureHorizontalCard = function (_Component) {
                 var icon = null;
                 icon = _img2.default[profile.typeId];
                 if (!icon) {
-                    console.warn("Social icon not found: " + profile.typeId);
-                    icon = _img2.default.link;
+                    return null;
+                    // console.warn("Social icon not found: " + profile.typeId);
+                    // icon = images.link;
                 }
                 //profile.typeId;
                 return _react2.default.createElement(
@@ -241,39 +240,28 @@ var CreatureHorizontalCard = function (_Component) {
             );
         }
     }, {
-        key: 'renderSocialMetrics',
-        value: function renderSocialMetrics(data) {
-            // console.log("socialProfiles", data);
-            if (this.props.showSocialMetrics === false || !data || data.length === 0) return null;
-            var profiles = data.map(function (profile) {
-                if (!profile.followers) return;
-                return _react2.default.createElement(
-                    'div',
-                    { style: styles.social.metric },
-                    _react2.default.createElement(
-                        'a',
-                        { style: { textDecoration: 'none', color: 'inherit' }, href: profile.url },
-                        _react2.default.createElement(
-                            'span',
-                            { style: styles.socialMetrics.followers },
-                            profile.followers
-                        ),
-                        _react2.default.createElement('br', null),
-                        _react2.default.createElement(
-                            'span',
-                            { style: styles.socialMetrics.title },
-                            profile.typeName
-                        )
-                    )
-                );
-            });
+        key: 'renderInfluencer',
+        value: function renderInfluencer(data) {
+            var _this2 = this;
 
-            if (!profiles) return null;
+            if (this.props.showInfluencer === false || !data) return null;
 
             return _react2.default.createElement(
                 'div',
-                null,
-                profiles
+                { style: styles.influencer },
+                _react2.default.createElement(
+                    'a',
+                    { onClick: function onClick() {
+                            return _this2.props.onClick(_this2.state.creature);
+                        } },
+                    _util2.default.formatNumber(data.followersTotal),
+                    _react2.default.createElement('br', null),
+                    _react2.default.createElement(
+                        'span',
+                        { style: { fontSize: '0.5em' } },
+                        'Seguidores'
+                    )
+                )
             );
         }
     }, {
@@ -444,6 +432,12 @@ var styles = {
         marginRight: 8,
         flex: 1
     },
+    column: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
     criaturaColumn: {
         display: 'flex',
         flexDirection: 'row'
@@ -456,6 +450,7 @@ var styles = {
         },
         photo: {
             width: '100%',
+            height: '100%',
             objectFit: 'cover'
         },
         photoSmall: {
@@ -486,9 +481,19 @@ var styles = {
         fontWeight: 300,
         textAlign: 'center'
     },
+    influencer: {
+        fontSize: '0.9em',
+        lineHeight: '1em',
+        textAlign: 'center',
+        fontWeight: 500
+    },
     social: {
         profiles: {
-            flex: 1
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'space-around'
         },
         metrics: {
             flex: 2,
@@ -514,7 +519,7 @@ var styles = {
         }
     },
     organizations: {
-        fontSize: 14,
+        fontSize: '0.8em',
         marginBottom: 12
     },
     organizationCurrent: {},
@@ -527,19 +532,20 @@ var styles = {
         marginBottom: 12
     },
     topics: {
-        fontSize: 14,
+        fontSize: '0.8em',
         marginBottom: 12
     },
     bios: {
-        fontSize: 14
+        fontSize: '0.8em'
     },
     bio: {
         marginBottom: 4
     },
     subTitle: {
-        fontSize: 18,
+        fontSize: '1.2em',
         fontWeight: 700,
-        lineHeight: '1.5'
+        lineHeight: '1.5',
+        color: '#636363'
     }
 
 };

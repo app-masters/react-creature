@@ -120,6 +120,10 @@ class CreatureSimpleListItem extends Component {
         if (this.props.showInfluencer === false || !data)
             return null;
 
+        if (!data.followersTotal){
+            return null;
+        }
+
         return (
             <div style={styles.influencer}>
                 <a  onClick={()=>this.props.onClick(this.state.creature)}>{Util.formatNumber(data.followersTotal)}</a>
@@ -194,8 +198,6 @@ class CreatureSimpleListItem extends Component {
             },
             gridSize: gridSize,
         });
-
-
     }
 
     componentWillUnmount() {
