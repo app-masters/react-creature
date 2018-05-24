@@ -188,6 +188,10 @@ var CreatureSimpleListItem = function (_Component) {
 
             if (this.props.showInfluencer === false || !data) return null;
 
+            if (!data.followersTotal) {
+                return null;
+            }
+
             return _react2.default.createElement(
                 'div',
                 { style: styles.influencer },

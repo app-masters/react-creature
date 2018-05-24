@@ -40,7 +40,14 @@ var CreatureHorizontalCard = function (_Component) {
     function CreatureHorizontalCard() {
         _classCallCheck(this, CreatureHorizontalCard);
 
-        return _possibleConstructorReturn(this, (CreatureHorizontalCard.__proto__ || Object.getPrototypeOf(CreatureHorizontalCard)).apply(this, arguments));
+        var _this = _possibleConstructorReturn(this, (CreatureHorizontalCard.__proto__ || Object.getPrototypeOf(CreatureHorizontalCard)).call(this));
+
+        _this.state = {
+            viewport: {},
+            gridSize: null,
+            creature: null
+        };
+        return _this;
     }
 
     _createClass(CreatureHorizontalCard, [{
@@ -80,53 +87,23 @@ var CreatureHorizontalCard = function (_Component) {
                 { style: styles.card },
                 _react2.default.createElement(
                     _reactFlexboxGrid.Col,
-                    { lg: 4, md: 4, sm: 12 },
+                    { lg: 4, sm: 4, xs: 12 },
                     this.renderPhotos(creature.photos)
                 ),
                 _react2.default.createElement(
                     _reactFlexboxGrid.Col,
-                    { lg: 1, md: 1, sm: 12, style: styles.column },
+                    { lg: 1, sm: 1, xs: 12, style: this.state.gridSize === 'xs' ? styles.row : styles.column },
                     this.renderInfluencer(creature.influencer),
                     this.renderSocialLinks(creature.socialProfiles)
                 ),
                 _react2.default.createElement(
                     _reactFlexboxGrid.Col,
-                    { lg: 6, md: 6, sm: 12 },
+                    { lg: 6, sm: 6, xs: 12 },
                     this.renderNameEmail(creature.contactInfo, creature.email),
                     this.renderLocation(creature.demographics),
                     this.renderOrganizations(creature.organizations),
                     this.renderWebSites(creature.contactInfo ? creature.contactInfo.websites : null),
                     this.renderTopics(creature.digitalFootprint ? creature.digitalFootprint.topics : null),
-                    this.renderBios(creature.socialProfiles)
-                )
-            );
-
-            return _react2.default.createElement(
-                'div',
-                { style: styles.criaturaCard },
-                this.renderPhoto(creature.photos),
-                _react2.default.createElement(
-                    'div',
-                    { style: styles.criaturaData },
-                    this.renderName(creature.contactInfo),
-                    this.renderLocation(creature.demographics),
-                    _react2.default.createElement(
-                        'div',
-                        { style: styles.criaturaColumn },
-                        _react2.default.createElement(
-                            'div',
-                            null,
-                            this.renderSocialLinks(creature.socialProfiles),
-                            this.renderSocialMetrics(creature.socialProfiles)
-                        ),
-                        _react2.default.createElement(
-                            'div',
-                            null,
-                            this.renderOrganizations(creature.organizations),
-                            this.renderWebSites(creature.contactInfo ? creature.contactInfo.websites : null),
-                            this.renderTopics(creature.digitalFootprint ? creature.digitalFootprint.topics : null)
-                        )
-                    ),
                     this.renderBios(creature.socialProfiles)
                 )
             );
@@ -245,6 +222,10 @@ var CreatureHorizontalCard = function (_Component) {
             var _this2 = this;
 
             if (this.props.showInfluencer === false || !data) return null;
+
+            if (!data.followersTotal) {
+                return null;
+            }
 
             return _react2.default.createElement(
                 'div',
@@ -413,142 +394,186 @@ var CreatureHorizontalCard = function (_Component) {
                 bios
             );
         }
+    }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var _this3 = this;
+
+            this._resize_mixin_callback();
+            window.addEventListener('resize', function () {
+                _this3._resize_mixin_callback();
+            });
+        }
+    }, {
+        key: '_resize_mixin_callback',
+        value: function _resize_mixin_callback() {
+            var gridSize = void 0;
+            if (document.documentElement.clientWidth > 1080) gridSize = 'lg';else if (document.documentElement.clientWidth > 640) gridSize = 'md';else if (document.documentElement.clientWidth <= 640 && document.documentElement.clientWidth > 575) gridSize = 'sm';else gridSize = 'xs';
+
+            if (gridSize !== this.state.gridSize) styles = styleCalc(document.documentElement.clientWidth, gridSize);
+
+            this.setState({
+                viewport: {
+                    width: document.documentElement.clientWidth,
+                    height: document.documentElement.clientHeight
+                },
+                gridSize: gridSize
+            });
+        }
+    }, {
+        key: 'componentWillUnmount',
+        value: function componentWillUnmount() {
+            var _this4 = this;
+
+            window.removeEventListener('resize', function () {
+                _this4._resize_mixin_callback();
+            });
+        }
     }]);
 
     return CreatureHorizontalCard;
 }(_react.Component);
 
-var styles = {
-    card: {
-        boxShadow: '0 2px 2px 2px rgba(140, 140, 140, 0.11)',
-        borderColor: '#c3c3c3',
-        borderWidth: 1,
-        borderStyle: 'solid',
-        display: 'flex',
-        flexDirection: 'row',
-        padding: 8,
-        marginLeft: 8,
-        marginTop: 8,
-        marginRight: 8,
-        flex: 1
-    },
-    column: {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    criaturaColumn: {
-        display: 'flex',
-        flexDirection: 'row'
-    },
-    photos: {
-        containerSmall: {
+var styleCalc = function styleCalc(clientWidth, gridSize) {
+    return {
+        card: {
+            boxShadow: '0 2px 2px 2px rgba(140, 140, 140, 0.11)',
+            borderColor: '#c3c3c3',
+            borderWidth: 1,
+            borderStyle: 'solid',
             display: 'flex',
-            flexWrap: 'wrap',
-            justifyContent: 'flex-start'
+            flexDirection: 'row',
+            padding: 8,
+            marginLeft: 8,
+            marginTop: 8,
+            marginRight: 8,
+            flex: 1
         },
-        photo: {
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover'
-        },
-        photoSmall: {
-            width: '30%',
-            maxWidth: 100,
-            maxHeight: 100,
-            margin: 4,
-            overflow: 'hidden'
-        }
-    },
-    email: {
-        fontSize: 12,
-        lineHeight: '1.2',
-        textAlign: 'center',
-        fontWeight: 700,
-        color: '#414141'
-    },
-    name: {
-        fontSize: 28,
-        lineHeight: '1.5',
-        textAlign: 'center',
-        fontWeight: 700,
-        color: '#313131'
-    },
-    location: {
-        fontSize: 16,
-        lineHeight: '2',
-        fontWeight: 300,
-        textAlign: 'center'
-    },
-    influencer: {
-        fontSize: '0.9em',
-        lineHeight: '1em',
-        textAlign: 'center',
-        fontWeight: 500
-    },
-    social: {
-        profiles: {
-            flex: 1,
+        column: {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            justifyContent: 'space-around'
+            justifyContent: 'center'
         },
-        metrics: {
-            flex: 2,
+        row: {
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center'
+        },
+        criaturaColumn: {
             display: 'flex',
             flexDirection: 'row'
         },
-        metric: {
-            padding: 8
-        }
-
-    },
-    socialIcon: {
-        width: 28,
-        margin: 3
-    },
-
-    socialMetrics: {
-        followers: {
-            fontSize: 24
+        photos: {
+            containerSmall: {
+                display: 'flex',
+                flexWrap: 'wrap',
+                justifyContent: 'flex-start'
+            },
+            photo: {
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover'
+            },
+            photoSmall: {
+                width: '30%',
+                maxWidth: 100,
+                maxHeight: 100,
+                margin: 4,
+                overflow: 'hidden'
+            }
         },
-        title: {
-            fontSize: 12
-        }
-    },
-    organizations: {
-        fontSize: '0.8em',
-        marginBottom: 12
-    },
-    organizationCurrent: {},
-    organizationPast: {
-        color: '#636363',
-        fontWeight: 300
-    },
-    sites: {
-        fontSize: 14,
-        marginBottom: 12
-    },
-    topics: {
-        fontSize: '0.8em',
-        marginBottom: 12
-    },
-    bios: {
-        fontSize: '0.8em'
-    },
-    bio: {
-        marginBottom: 4
-    },
-    subTitle: {
-        fontSize: '1.2em',
-        fontWeight: 700,
-        lineHeight: '1.5',
-        color: '#636363'
-    }
+        email: {
+            fontSize: 12,
+            lineHeight: '1.2',
+            textAlign: 'center',
+            fontWeight: 700,
+            color: '#414141'
+        },
+        name: {
+            fontSize: 28,
+            lineHeight: '1.5',
+            textAlign: 'center',
+            fontWeight: 700,
+            color: '#313131'
+        },
+        location: {
+            fontSize: 16,
+            lineHeight: '2',
+            fontWeight: 300,
+            textAlign: 'center'
+        },
+        influencer: {
+            fontSize: '0.9em',
+            lineHeight: '1em',
+            textAlign: 'center',
+            fontWeight: 500
+        },
+        social: {
+            profiles: {
+                flex: 1,
+                display: 'flex',
+                flexDirection: gridSize === 'xs' ? 'row' : 'column',
+                alignItems: 'center',
+                justifyContent: 'space-around'
+            },
+            metrics: {
+                flex: 2,
+                display: 'flex',
+                flexDirection: 'row'
+            },
+            metric: {
+                padding: 8
+            }
 
+        },
+        socialIcon: {
+            width: 28,
+            margin: 3
+        },
+
+        socialMetrics: {
+            followers: {
+                fontSize: 24
+            },
+            title: {
+                fontSize: 12
+            }
+        },
+        organizations: {
+            fontSize: '0.8em',
+            marginBottom: 12
+        },
+        organizationCurrent: {},
+        organizationPast: {
+            color: '#636363',
+            fontWeight: 300
+        },
+        sites: {
+            fontSize: 14,
+            marginBottom: 12
+        },
+        topics: {
+            fontSize: '0.8em',
+            marginBottom: 12
+        },
+        bios: {
+            fontSize: '0.8em'
+        },
+        bio: {
+            marginBottom: 4
+        },
+        subTitle: {
+            fontSize: '1.2em',
+            fontWeight: 700,
+            lineHeight: '1.5',
+            color: '#636363'
+        }
+    };
 };
+
+var styles = styleCalc(1024, 'xs');
 
 CreatureHorizontalCard.propTypes = {
     creature: _propTypes2.default.object

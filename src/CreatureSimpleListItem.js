@@ -22,7 +22,7 @@ class CreatureSimpleListItem extends Component {
 
     render() {
         let creature = this.state.creature;
-        if (!creature)
+        if (!creature || !creature.contactInfo || (!creature.contactInfo.fullName && !creature.contactInfo.givenName))
             return (<div/>);
 
         // console.log("creature..", creature);
@@ -239,6 +239,7 @@ const styleCalc = (clientWidth, gridSize) => {
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: (gridSize === 'xs' ? 'center' : 'left'),
+            overflow: 'hidden'
         },
         photo: {
             width: '100%',
